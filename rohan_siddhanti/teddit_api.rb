@@ -37,7 +37,7 @@ end
 #   2. http://reddit.com/r/worldnews.json
 #   3. http://reddit.com/.json
 
-url = "http://reddit.com/r/cats.json"
+url = "http://reddit.com/.json"
 
 # Now that we have the address of the website that we want to get, let's use
 # `RestClient`'s `.get` method in order to download the url and let's store that
@@ -74,7 +74,10 @@ posts = []
 #   all the posts.
 #
 
-posts.each do |post|
+
+#posts = parsed_response['data']['children']
+
+parsed_response['data']['children'].each do |post|
   
   # Once inside the loop, let's stick a `binding.pry` in here so that we can
   # experiment with what sort of data is in each post. Run the file with the
@@ -84,13 +87,16 @@ posts.each do |post|
   # 1. title, which will access the 'title' attribute from the hash (you may
   # need to dig down into an attribute before you see the 'title' key.
 
-  title = parsed_response['data']['children']['data']['title']
+  title = post['data']['title']
+
+  
 
   # 2. category, which will access the 'subreddit' attribute from the hash,
   # again, you may need to dig down into an attribute first before you see that
   # key of the hash
 
-  category = parsed_response['data']['children']['data']['subreddit']
+  category = post['data']['subreddit']
+
 
   # 3. Lastly, upvotes - which you will manually have to calculate using the
   # `calculate_upvotes` method at the top of this program. Remember that this
@@ -99,6 +105,7 @@ posts.each do |post|
 
   upvotes = calculate_upvotes(title, category)
 
+
   # This line create a new hash with three keys: :title, :category, and
   # :upvotes, and store it in a variable called posts. Remember, we're setting
   # the keys equal to the variables that you defined above (`title`, `category`
@@ -106,9 +113,13 @@ posts.each do |post|
   # work
   post = {title: title, category: category, upvotes: upvotes}
 
+
+
   # Lastly, this line will add the new hash into the empty `posts` array that
   # you defined above
   posts << post
+
+  
 
 # Be sure to end your loop here.
 
